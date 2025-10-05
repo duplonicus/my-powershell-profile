@@ -50,19 +50,19 @@ function dex {
     # Priority: USB > TCP > mDNS discovery (unless ForceWireless)
     if ($usbSerial -and -not $ForceWireless) {
         Write-Host "Launching scrcpy via USB (serial: $usbSerial)..." -ForegroundColor Green
-        scrcpy -s $usbSerial --new-display=$DisplaySize --video-codec=h265
+        scrcpy --serial $usbSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off
         return
     }
     
     if ($tcpSerial) {
         Write-Host "Launching scrcpy via TCP/IP (serial: $tcpSerial)..." -ForegroundColor Green
-        scrcpy -s $tcpSerial --new-display=$DisplaySize --video-codec=h265
+        scrcpy --serial $tcpSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off
         return
     }
 }
 
 function cast {
-    & scrcpy --tcpip
+    & scrcpy --tcpip --stay-awake --turn-screen-off
 }
 
 if ($env:TERM_PROGRAM -eq "kiro") { . "$(kiro --locate-shell-integration-path pwsh)" }
