@@ -24,10 +24,6 @@ function skate {
 
 # Use scrcpy to mirror Android phone display - auto-detects USB or wireless
 # Requires scrcpy to be installed and in PATH
-# Use scrcpy to mirror Android phone display - auto-detects USB or wireless
-# Requires scrcpy to be installed and in PATH
-# Use scrcpy to mirror Android phone display - auto-detects USB or wireless
-# Requires scrcpy to be installed and in PATH
 function dex {
     param(
         [string]$DisplaySize = "1920x1080/225",
@@ -96,7 +92,7 @@ function dex {
 }
 
 function cast {
-    & scrcpy --tcpip=192.168.40.117:46099
+    & scrcpy --tcpip=192.168.40.6:46099
 }
 
 if ($env:TERM_PROGRAM -eq "kiro") { . "$(kiro --locate-shell-integration-path pwsh)" }
