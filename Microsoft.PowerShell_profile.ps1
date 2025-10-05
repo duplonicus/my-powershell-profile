@@ -15,18 +15,19 @@ function killdcs {
 }
 
 function switchmon {
-    & "C:\Users\dup\dev\monitor_switcher\switch.ps1"
+    "$env:USERPROFILE\dev\monitor_switcher\switch.ps1"
 }
 
 function skate {
-    & "C:\Users\dup\dev\EA-skate-start-stop\EA_skate_start_stop.ps1"
+    "$env:USERPROFILE\dev\EA-skate-start-stop\EA_skate_start_stop.ps1"
 }
 
-# Use scrcpy to mirror Android phone display - auto-detects USB or wireless
-# Requires scrcpy to be installed and in PATH
+# Use scrcpy to mirror Android phone display to virtual desktop like Samsung Dex which no longer works in later version of OneUI - auto-detects USB or wireless
+# Requires scrcpy and adb to be installed and in PATH
+# Device must be paired manually once via usb and tcp/ip
 function dex {
     param(
-        [string]$DisplaySize = "1920x1080/225",
+        [string]$DisplaySize = "1920x1080/200",
         [switch]$ForceWireless
     )
     
@@ -58,41 +59,10 @@ function dex {
         scrcpy -s $tcpSerial --new-display=$DisplaySize --video-codec=h265
         return
     }
-    
-    # No devices connected - attempt mDNS discovery
-    Write-Host "No devices connected, attempting mDNS discovery..." -ForegroundColor Yellow
-    $env:ADB_MDNS_OPENSCREEN = "1"
-    
-    adb kill-server
-    adb start-server
-    Start-Sleep -Seconds 3
-    
-    # Check mDNS services
-    $services = adb mdns services | Out-String
-    Write-Host "[DEBUG] mDNS services:" -ForegroundColor Cyan
-    Write-Host $services -ForegroundColor Yellow
-    
-    # Try connecting via mDNS service name
-    if ($services -match "([\w-]+)\._adb-tls-connect\._tcp") {
-        $serviceName = $matches[0]
-        Write-Host "Discovered: $serviceName" -ForegroundColor Green
-        
-        adb connect $serviceName
-        Start-Sleep -Seconds 2
-        
-        # Get the newly connected device serial
-        $newTcpDevice = adb devices | Select-String "_adb-tls-connect._tcp.*device$"
-        if ($newTcpDevice) {
-            $newSerial = ($newTcpDevice -split '\s+')[0]
-            scrcpy -s $newSerial --new-display=$DisplaySize --video-codec=h265
-        }
-    } else {
-        Write-Host "ERROR: No devices found! Ensure Wireless Debugging is ON." -ForegroundColor Red
-    }
 }
 
 function cast {
-    & scrcpy --tcpip=192.168.40.6:46099
+    & scrcpy --tcpip
 }
 
 if ($env:TERM_PROGRAM -eq "kiro") { . "$(kiro --locate-shell-integration-path pwsh)" }
