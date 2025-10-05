@@ -33,8 +33,8 @@ function dex {
     
     # Get all connected devices
     $allDevices = adb devices | Select-String "device$"
-    $usbDevices = $allDevices | Where-Object { $_ -notmatch "_adb-tls-connect._tcp" }
-    $tcpDevices = $allDevices | Where-Object { $_ -match "_adb-tls-connect._tcp" }
+    $tcpDevices = $allDevices | Where-Object { $_ -match ":\d+\s+" }
+    $usbDevices = $allDevices | Where-Object { $_ -notmatch ":\d+\s+" }
     
     Write-Host "[DEBUG] All devices: $($allDevices.Count)" -ForegroundColor Cyan
     Write-Host "[DEBUG] USB devices: $usbDevices" -ForegroundColor Cyan
