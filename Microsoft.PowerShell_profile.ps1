@@ -65,4 +65,37 @@ function cast {
     & scrcpy --tcpip --stay-awake --turn-screen-off
 }
 
+# For finding Registry entries in Windows Installed Apps that cannot be deleted because the files have been manually deleted
+# Call with: Search-RegistryUninstall -SearchPattern "YourSearchTerm"
+function Search-RegistryUninstall {
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$SearchPattern
+  )
+
+  $paths = @(
+    'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall',
+    'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall',
+    'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall',
+    'HKCU:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall'
+  )
+
+  $results = foreach ($p in $paths) {
+    Get-ChildItem -Path $p -ErrorAction SilentlyContinue |
+      ForEach-Object {
+        $props = Get-ItemProperty -Path $_.PsPath -ErrorAction SilentlyContinue
+        if ($props.DisplayName -and ($props.DisplayName -match $SearchPattern)) {
+          [pscustomobject]@{
+            DisplayName     = $props.DisplayName
+            KeyPath         = $_.PsPath
+            UninstallString = $props.UninstallString
+            DisplayVersion  = $props.DisplayVersion
+          }
+        }
+      }
+  }
+
+  $results | Format-Table -Auto
+}
+
 if ($env:TERM_PROGRAM -eq "kiro") { . "$(kiro --locate-shell-integration-path pwsh)" }
