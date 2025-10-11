@@ -15,11 +15,11 @@ function killdcs {
 }
 
 function switchmon {
-    "$env:USERPROFILE\dev\monitor_switcher\switch.ps1"
+    & "$env:USERPROFILE\dev\monitor_switcher\switch.ps1"
 }
 
 function skate {
-    "$env:USERPROFILE\dev\EA-skate-start-stop\EA_skate_start_stop.ps1"
+    & "$env:USERPROFILE\dev\EA-skate-start-stop\EA_skate_start_stop.ps1"
 }
 
 # Use scrcpy to mirror Android phone display to virtual desktop like Samsung Dex which no longer works in later version of OneUI - auto-detects USB or wireless
