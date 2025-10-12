@@ -53,7 +53,7 @@ function dex {
     Write-Host "[DEBUG] USB serial: $usbSerial" -ForegroundColor Cyan
     Write-Host "[DEBUG] TCP serial: $tcpSerial" -ForegroundColor Cyan
     
-    # Priority: USB > TCP > mDNS discovery (unless ForceWireless)
+    # Priority: USB > TCP
     if ($usbSerial -and -not $ForceWireless) {
         Write-Host "Launching scrcpy via USB (serial: $usbSerial)..." -ForegroundColor Green
         scrcpy --serial $usbSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off
