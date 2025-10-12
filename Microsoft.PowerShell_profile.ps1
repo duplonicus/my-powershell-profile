@@ -62,7 +62,11 @@ function dex {
 }
 
 function cast {
-    & scrcpy --tcpip --stay-awake --turn-screen-off
+  scrcpy --tcpip --stay-awake --turn-screen-off
+}
+
+function adbc {
+  adb connect 192.168.40.6:5555
 }
 
 # For finding Registry entries in Windows Installed Apps that cannot be deleted because the files have been manually deleted
