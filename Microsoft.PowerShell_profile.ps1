@@ -1,23 +1,29 @@
+# Reboot the computer using UNIX-style command
 function reboot {
     shutdown /f /r /t 0
 }
 
+# Sleep the computer
 function zzz {
     rundll32.exe powrprof.dll,SetSuspendState 0,1,0
 }
 
+# Lock the computer
 function lock {
     rundll32.exe user32.dll,LockWorkStation
 }
 
+# Kill DCS World if it is running
 function killdcs {
     taskkill /f /im dcs.exe
 }
 
+# Switch primary monitor, audio device, and move windows
 function switchmon {
     & "$env:USERPROFILE\dev\monitor_switcher\switch.ps1"
 }
 
+# Start/stop EA Skate and close/lauch AHK scripts
 function skate {
     & "$env:USERPROFILE\dev\EA-skate-start-stop\EA_skate_start_stop.ps1"
 }
@@ -61,10 +67,12 @@ function dex {
     }
 }
 
+# Mirror my phone
 function cast {
   scrcpy --tcpip --stay-awake --turn-screen-off
 }
 
+# Connect to my phone via adb over wifi
 function adbc {
   adb connect 192.168.40.6:5555
 }
