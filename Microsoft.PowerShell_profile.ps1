@@ -56,13 +56,13 @@ function dex {
     # Priority: USB > TCP
     if ($usbSerial -and -not $ForceWireless) {
         Write-Host "Launching scrcpy via USB (serial: $usbSerial)..." -ForegroundColor Green
-        scrcpy --serial $usbSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off
+        scrcpy --serial $usbSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off --no-vd-destroy-content
         return
     }
     
     if ($tcpSerial) {
         Write-Host "Launching scrcpy via TCP/IP (serial: $tcpSerial)..." -ForegroundColor Green
-        scrcpy --serial $tcpSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off
+        scrcpy --serial $tcpSerial --new-display=$DisplaySize --video-codec=h265 --stay-awake --turn-screen-off --no-vd-destroy-content
         return
     }
 }
